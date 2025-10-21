@@ -1,9 +1,35 @@
 from django.shortcuts import render
+from slack import WebClient
+from slack_sdk.errors import SlackApiError
+import os
 from django.http.request import HttpRequest
 from django.http.response import JsonResponse
 
 # Create your views here.
+client = WebClient(token=os.environ["SLACK_KEY"])
+
+def get_user_id_by_email(email: str) -> str | None:
+    try:
+        res = client.users_lookupByEmail(email=email)  # needs users:read.email
+        return res["user"]["id"]
+    except SlackApiError as e:
+        print(f"Lookup failed: {e.response['error']}")
+        return None
+    
+def dm_user_by_id(user_id: str, text: str):
+    try:
+        # 1) Open (or fetch) a DM with the user
+        opened = client.conversations_open(users=[user_id])  # note: 'users' (plural)
+        dm_channel = opened["channel"]["id"]
+
+        # 2) Send the message to that DM channel
+        client.chat_postMessage(channel=dm_channel, text=text)
+        print("Message sent!")
+    except SlackApiError as e:
+        print(f"Error: {e.response['error']}")
+
 
 def gitlab_webhook_for_reviews(request: HttpRequest):
-
+    slack_user_id = get_user_id_by_email("elsever1@live.com")
+    dm_user_by_id(slack_user_id, "Hello from a proper DM channel!")
     return JsonResponse({"message is sent to elsever1@live.com": "OK"})
