@@ -13,7 +13,8 @@ def get_user_id_by_email(email: str) -> str | None:
         res = client.users_lookupByEmail(email=email)  # needs users:read.email
         return res["user"]["id"]
     except SlackApiError as e:
-        print(f"Lookup failed: {e.response['error']}")
+        print(f"Lookup failed: {e.response}")
+        print(os.environ["SLACK_KEY"])
         return None
     
 def dm_user_by_id(user_id: str, text: str):
