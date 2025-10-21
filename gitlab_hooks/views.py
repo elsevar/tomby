@@ -5,4 +5,5 @@ from django.http.response import JsonResponse
 # Create your views here.
 
 def gitlab_webhook_for_reviews(request: HttpRequest):
-    return JsonResponse({"status": "OK"})
+
+    return JsonResponse({"message is sent to elsever1@live.com": "OK"})
