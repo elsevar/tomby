@@ -3,6 +3,7 @@ from slack import WebClient
 from slack_sdk.errors import SlackApiError
 import os
 from django.http.request import HttpRequest
+from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 
 # Create your views here.
@@ -29,6 +30,7 @@ def dm_user_by_id(user_id: str, text: str):
         print(f"Error: {e.response['error']}")
 
 
+@csrf_exempt 
 def gitlab_webhook_for_reviews(request: HttpRequest):
     slack_user_id = get_user_id_by_email("elsever1@live.com")
     dm_user_by_id(slack_user_id, "Hello from a proper DM channel!")
