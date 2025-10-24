@@ -2,6 +2,7 @@ from django.shortcuts import render
 from slack import WebClient
 from slack_sdk.errors import SlackApiError
 import os
+import json
 from django.http.request import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
@@ -32,7 +33,7 @@ def dm_user_by_id(user_id: str, text: str):
 
 @csrf_exempt 
 def gitlab_webhook_for_reviews(request: HttpRequest):
-    payload = request.POST
+    payload = json.loads(request.body.decode('utf-8'))
     slack_user_id = get_user_id_by_email("elsever1@live.com")
     print(payload)
     dm_user_by_id(slack_user_id, payload)
