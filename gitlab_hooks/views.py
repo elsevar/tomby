@@ -32,7 +32,7 @@ def dm_user_by_id(user_id: str, text: str):
 
 @csrf_exempt 
 def gitlab_webhook_for_reviews(request: HttpRequest):
-    slack_user_id = get_user_id_by_email("elsever1@live.com")
-    dm_user_by_id(slack_user_id, "Hello from a proper DM channel!")
     payload = request.POST
+    slack_user_id = get_user_id_by_email("elsever1@live.com")
+    dm_user_by_id(slack_user_id, payload)
     return JsonResponse(payload)
