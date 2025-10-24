@@ -36,5 +36,5 @@ def gitlab_webhook_for_reviews(request: HttpRequest):
     payload = json.loads(request.body.decode('utf-8'))
     slack_user_id = get_user_id_by_email("elsever1@live.com")
     print(payload)
-    dm_user_by_id(slack_user_id, payload)
+    dm_user_by_id(slack_user_id, json.dumps(payload))
     return JsonResponse(payload)
