@@ -34,5 +34,6 @@ def dm_user_by_id(user_id: str, text: str):
 def gitlab_webhook_for_reviews(request: HttpRequest):
     payload = request.POST
     slack_user_id = get_user_id_by_email("elsever1@live.com")
+    print(payload)
     dm_user_by_id(slack_user_id, payload)
     return JsonResponse(payload)
